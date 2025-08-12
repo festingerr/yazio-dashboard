@@ -1,26 +1,17 @@
 {
-  "name": "yazio-export",
+  "name": "yazio-dashboard",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/bin/index.js",
+  "description": "Dashboard react app for getting exported data from Yazio mobile app",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "build-cli": "tsc --project tsconfig.node.json",
-    "dev-cli": "tsx bin/index.ts",
-    "start-cli": "node dist/bin/index.js",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build-cli",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "yazio-export": "./dist/bin/index.js"
+    "preview": "vite preview"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Ivan Klimchuk <alroniks@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@tremor/react": "^3.18.7",
     "@types/react": "^18.3.12",
