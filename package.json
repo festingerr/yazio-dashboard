@@ -2,28 +2,27 @@
   "name": "yazio-dashboard",
   "version": "1.0.0",
   "description": "Dashboard react app for getting exported data from Yazio mobile app",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "clean": "rm -rf dist",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "keywords": [],
   "author": "Ivan Klimchuk <alroniks@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@remixicon/react": "^4.6.0",
     "@tremor/react": "^3.18.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.3",
     "axios": "^1.11.0",
     "commander": "^14.0.0",
     "dotenv": "^17.2.1",
     "googleapis": "^155.0.1",
+    "next": "^15.4.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "vite": "^5.4.10",
     "yazio": "^1.1.3"
   },
   "devDependencies": {
