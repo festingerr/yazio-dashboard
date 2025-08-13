@@ -37,3 +37,17 @@ export const hasErrorInput = [
   // ring color
   "ring-red-200 dark:ring-red-700/30",
 ]
+
+export function getAge(dob: Date | undefined) {
+  const today = new Date();
+  const birth = new Date(dob || today);
+
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthes = today.getMonth() - birth.getMonth();
+
+  if (monthes < 0 || (monthes === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+
+  return age;
+}

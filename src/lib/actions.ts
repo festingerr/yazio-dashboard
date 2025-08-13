@@ -1,6 +1,39 @@
 'use server';
 
 import { Yazio } from 'yazio';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const yazio = new Yazio({
+  credentials: {
+    username: process.env.YAZIO_USERNAME,
+    password: process.env.YAZIO_PASSWORD,
+  },
+});
+
+export type Profile = {
+  username: string;
+  initials: string;
+  userview: string;
+  height: number;
+  dob: Date;
+}
+
+export async function getProfileData(): Promise<Profile | undefined>  {
+  try {
+    const profile = await yazio.user.get();
+    return {
+      username: `${profile.first_name} ${profile.last_name}`,
+      initials: `${profile.first_name.charAt(0)}${profile.last_name.charAt(0)}`,
+      userview: profile.profile_image,
+      height: profile.body_height,
+      dob: new Date(profile.date_of_birth),
+    };
+  } catch (error) {
+    console.error('Error fetching profile data:', error);
+  }
+}
 
 export async function getNutritionData(date?: string) {
   date = date || new Date().toISOString().split('T')[0];

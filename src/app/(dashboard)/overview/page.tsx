@@ -1,7 +1,7 @@
 "use client"
 
 import Dashboard from "@/components/Dashboard"
-import { Button } from "@/components/Button"
+import { Button } from "@/components/tremor/Button"
 
 export default function OverviewPage() {
   return (
