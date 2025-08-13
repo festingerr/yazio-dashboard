@@ -1,20 +1,28 @@
-import type { Metadata } from 'next'
-import '@/app/styles/index.css'
+import { GeistSans } from "geist/font/sans";
+import type { Metadata } from 'next';
+import { ThemeProvider } from "next-themes";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'NutriTrack - Nutrition Dashboard',
+  title: 'YazioTracker - Nutrition Dashboard',
   description: 'Professional nutrition tracking dashboard for Yazio data',
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html lang="en">
-      <body style={{ fontFamily: '"Space Grotesk", "Noto Sans", sans-serif' }}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${GeistSans.className} min-h-full bg-white antialiased dark:bg-gray-950`}>
+        <ThemeProvider
+          defaultTheme="system"
+          disableTransitionOnChange
+          attribute="class"
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

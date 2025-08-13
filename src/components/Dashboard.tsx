@@ -1,17 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Header from './Header'
-import DateSelector from './DateSelector'
-import { getNutritionData } from '../actions'
+import { useState, useEffect } from 'react';
+import Header from './Header';
+import { getNutritionData } from '@/lib/actions';
 
-export default function NutritionDashboard() {
+export default function Dashboard() {
   const [nutritionData, setNutritionData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [selectedDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  )
+  // const [selectedDate] = useState<string>(
+  //   new Date().toISOString().split('T')[0]
+  // )
 
   // Mock data for demonstration (replace with real data from your API)
   const mockNutritionData = {
@@ -60,19 +59,21 @@ export default function NutritionDashboard() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      setLoading(true)
-      const result = await getNutritionData()
-      handleDateChange(result)
+      setLoading(true);
+      console.log('sdfsdfdsfdsf');
+      const result = await getNutritionData();
+      console.log('Fetched initial data:', result);
+      // handleDateChange(result);
     }
     
-    fetchInitialData()
-  }, [])
+    fetchInitialData();
+  }, []);
 
   return (
     <>
-      <main className='bg-slate-50 p-6 sm:p-10 min-h-screen'>
+      <div className="shadow-s sticky top-0 z-20 bg-white dark:bg-gray-950">
         <Header/>
-      </main>
+      </div>
       <div className="layout-container flex h-full grow flex-col">
         {/* Header */}
         <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f4f2] px-10 py-3">
@@ -129,10 +130,10 @@ export default function NutritionDashboard() {
             </div>
 
             {/* Date Selector with Server Action */}
-            <DateSelector 
+            {/* <DateSelector 
               initialDate={selectedDate}
               onDateChange={handleDateChange}
-            />
+            /> */}
 
             {error && (
               <div className="mx-4 mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
