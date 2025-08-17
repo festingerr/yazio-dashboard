@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/../public/Logo";
 import { Label } from "@radix-ui/react-label";
 import { cx, getAge } from "@/lib/utils";
-import { Profile } from "@/lib/actions";
+import { ProfileData } from "@/lib/actions";
 
 interface NavigationClientProps {
-  profile: Profile | undefined;
+  profile: ProfileData | undefined;
 }
 
 function NavigationClient({ profile }: NavigationClientProps) {

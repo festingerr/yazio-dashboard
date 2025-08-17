@@ -3,12 +3,7 @@ import { NavigationClient } from "./NavigationClient";
 
 async function Navigation() {
   const profile = await getProfileData();
-
-  console.log(profile);
-
-  return (
-    <NavigationClient profile={profile} />
-  );
+  return (<NavigationClient profile={profile} />);
 }
 
 export { Navigation };

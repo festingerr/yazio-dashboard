@@ -2,6 +2,10 @@
 
 import { Yazio } from 'yazio';
 import dotenv from 'dotenv';
+import { SummaryData } from "@/components/data/Summary";
+import { forEach, reduce, transform } from 'lodash';
+import { Meals } from "@/components/data/Meals";
+import { ActivityData, Training } from "@/components/data/Activity";
 
 dotenv.config();
 
@@ -12,7 +16,7 @@ const yazio = new Yazio({
   },
 });
 
-export type Profile = {
+export type ProfileData = {
   username: string;
   initials: string;
   userview: string;
@@ -20,7 +24,20 @@ export type Profile = {
   dob: Date;
 }
 
-export async function getProfileData(): Promise<Profile | undefined>  {
+type ActivityObjectType = {
+  energy: number,
+  distance: number,
+  duration: number,
+  source: string | null,
+  gateway: string,
+  steps: number,
+}
+
+type ActivityReturned = ReturnType<typeof yazio.user.getExercises> & {
+  activity: ActivityObjectType;
+};
+
+export async function getProfileData(): Promise<ProfileData | undefined>  {
   try {
     const profile = await yazio.user.get();
     return {
@@ -35,42 +52,80 @@ export async function getProfileData(): Promise<Profile | undefined>  {
   }
 }
 
-export async function getNutritionData(date?: string) {
-  date = date || new Date().toISOString().split('T')[0];
+export async function getActivityData(date: Date = new Date()): Promise<ActivityData | undefined> {
+  const formattedDate = date.toISOString().split('T')[0];
 
   try {
-    const yazio = new Yazio({
-      credentials: {
-        username: "q4gydkik9f@privaterelay.appleid.com",
-        password: "QMxfGxXCTgSDY6NK2ucu",
-      },
-    });
+    const activity = await yazio.user.getExercises({ date: formattedDate });
+    const a = activity as unknown as ActivityReturned;
 
-    console.log('Fetching nutrition data for date:', date);
-
-    // const targetDate = date ? new Date(date) : new Date()
-    // const items = await yazio.user.getConsumedItems({ date });
-
-    // const ppp = await yazio.products.get('f704e3d0-70ef-4553-9be1-9531973b756c');
-
-    // const f = await yazio.products.search
-
-    // console.log('Fetched items: ', ppp);
+    console.log('Summary data:', a);
 
     return {
-      success: true,
-      // data: items
-    }
+      steps: a.activity.steps || 0,
+      distance: a.activity.distance || 0,
+      calories: a.activity.energy || 0,
+      training: activity.training.map((t): Training => ({
+        name: t.name,
+        duration: t.duration,
+        distance: t.distance,
+        calories: t.energy,
+      })),
+    };
   } catch (error) {
-    console.error('Error fetching nutrition data:', error)
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch nutrition data'
-    }
+    console.error('Error fetching activity data:', error);
   }
 }
 
-export async function updateNutritionDate(formData: FormData) {
-  const date = formData.get('date') as string
-  return await getNutritionData(date)
+export async function getSummaryData(date: Date = new Date()): Promise<SummaryData | undefined> {
+  const formattedDate = date.toISOString().split('T')[0];
+  try {
+    const summary = await yazio.user.getDailySummary({ date: formattedDate });
+
+    console.log('Summary data:', summary);
+
+    const totals = reduce(summary.meals, (acc: any, meal) => {
+      acc.energy_goal += meal.energy_goal;
+      forEach(meal.nutrients, (value, key) => {
+        acc.nutrients[key] = (acc.nutrients[key] || 0) + value;
+      });
+      return acc;
+    }, { energy_goal: 0, nutrients: {} });
+
+    return {
+      steps: summary.steps,
+      water: summary.water_intake,
+      force: Math.round(summary.activity_energy),
+      meals: transform(summary.meals, (result, v, k) => {
+        result.push({
+          time: k as any,
+          meal: {
+            fat: Math.round(v.nutrients['nutrient.fat']) || 0,
+            carbs: Math.round(v.nutrients['nutrient.carb']) || 0,
+            protein: Math.round(v.nutrients['nutrient.protein']) || 0,
+          calories: Math.round(v.nutrients['energy.energy']) || 0,
+          energy: Math.round(v.energy_goal) || 0,
+        }
+      })}, [] as Meals[]),
+      total: {
+        fat: Math.round(totals.nutrients['nutrient.fat']) || 0,
+        carbs: Math.round(totals.nutrients['nutrient.carb']) || 0,
+        protein: Math.round(totals.nutrients['nutrient.protein']) || 0,
+        calories: Math.round(totals.nutrients['energy.energy']) || 0,
+      },
+      units: {
+        mass: summary.units.unit_mass,
+        energy: summary.units.unit_energy,
+        length: summary.units.unit_length,
+        serving: summary.units.unit_serving,
+      },
+      goals: {
+        steps: summary.goals['activity.step'],
+        force: summary.goals['energy.energy'],
+        water: summary.goals.water,
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching summary data:', error);
+  }
 }
