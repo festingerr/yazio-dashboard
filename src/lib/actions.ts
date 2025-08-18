@@ -6,6 +6,7 @@ import { SummaryData } from "@/components/data/Summary";
 import { forEach, reduce, transform } from 'lodash';
 import { Meals } from "@/components/data/Meals";
 import { ActivityData, Training } from "@/components/data/Activity";
+import { ProductsData } from "@/components/data/Products";
 
 dotenv.config();
 
@@ -59,8 +60,6 @@ export async function getActivityData(date: Date = new Date()): Promise<Activity
     const activity = await yazio.user.getExercises({ date: formattedDate });
     const a = activity as unknown as ActivityReturned;
 
-    console.log('Summary data:', a);
-
     return {
       steps: a.activity.steps || 0,
       distance: a.activity.distance || 0,
@@ -81,8 +80,6 @@ export async function getSummaryData(date: Date = new Date()): Promise<SummaryDa
   const formattedDate = date.toISOString().split('T')[0];
   try {
     const summary = await yazio.user.getDailySummary({ date: formattedDate });
-
-    console.log('Summary data:', summary);
 
     const totals = reduce(summary.meals, (acc: any, meal) => {
       acc.energy_goal += meal.energy_goal;
@@ -127,5 +124,30 @@ export async function getSummaryData(date: Date = new Date()): Promise<SummaryDa
     }
   } catch (error) {
     console.error('Error fetching summary data:', error);
+  }
+}
+
+export async function getProductsData(date: Date = new Date()): Promise<ProductsData[] | undefined> {
+  const formattedDate = date.toISOString().split('T')[0];
+  try {
+    const response = await yazio.user.getConsumedItems({ date: formattedDate });
+
+    return Promise.all(response.products.map(async (product): Promise<ProductsData> => {
+
+      const details = await yazio.products.get(product.product_id);
+
+      // console.log(details, product);
+
+      return {
+        name: details?.name || 'Unknown',
+        energy: (details?.nutrients['energy.energy'] || 0) * product.amount,
+        amount: product.amount,
+        daytime: product.daytime,
+        serving: product.serving,
+        quantity: product.serving_quantity
+      };
+    }));
+  } catch (error) {
+    console.error('Error fetching products data:', error);
   }
 }

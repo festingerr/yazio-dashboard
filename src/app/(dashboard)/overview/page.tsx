@@ -1,27 +1,33 @@
 "use client"
 
-import Dashboard from "@/components/Dashboard"
 import Activity, { ActivityData } from "@/components/data/Activity"
 import { Meals } from "@/components/data/Meals"
 import { Summary, SummaryData } from "@/components/data/Summary"
 import { DatePicker } from "@/components/tremor/DatePicker"
 import { Divider } from "@/components/tremor/Divider"
-import { getActivityData, getSummaryData } from "@/lib/actions"
+import { getActivityData, getProductsData, getSummaryData } from "@/lib/actions"
 import { useEffect, useState } from "react"
+import { Products, ProductsData } from "@/components/data/Products"
+
+export const dayTimes = ["breakfast", "lunch", "dinner", "snack"] as const;
+export type DayTime = typeof dayTimes[number];
 
 export default function OverviewPage() {
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [summary, setSummary] = useState<SummaryData | undefined>(undefined);
   const [activity, setActivity] = useState<ActivityData | undefined>(undefined);
+  const [products, setProducts] = useState<ProductsData[] | undefined>(undefined);
 
   useEffect(() => {
     const loadData = async () => {
       const summary = await getSummaryData(date);
       const activity = await getActivityData(date);
-      console.log('Summary data:', summary, activity);
+      const products = await getProductsData(date);
+      console.log(products);
       setSummary(summary);
       setActivity(activity);
+      setProducts(products);
     }
     loadData();
   }, [date]);
@@ -40,13 +46,13 @@ export default function OverviewPage() {
         <DatePicker value={date} onChange={setDate} className="w-60" />
       </div>
       <Divider />
-      <dl className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <dl className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-2">
         <Summary summary={summary!} />
-        <Meals meals={summary?.meals} />
+        {/* <Meals meals={summary?.meals} /> */}
         <Activity activity={activity} stepsGoal={summary?.goals.steps || 0} />
       </dl>
       <div>
-        <Dashboard />
+        <Products products={products} meals={summary?.meals} />
       </div>
     </main>
   )

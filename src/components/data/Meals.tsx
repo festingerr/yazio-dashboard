@@ -4,9 +4,10 @@ import { capitalize, map } from "lodash";
 import { Card } from "../tremor/Card";
 import { ProgressBar } from "../tremor/ProgressBar";
 import { Totals } from "./Summary";
+import { DayTime } from "@/app/(dashboard)/overview/page";
 
 export type Meals = {
-  time: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  time: DayTime;
   meal: Totals & { energy: number };
 }
 
@@ -33,7 +34,7 @@ export function Meals({ meals }: MealsProps) {
                 <ul role="list" className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs">
                   <div className="flex items-center gap-2">
                     <span className="size-2.5 shrink-0 rounded-sm bg-blue-500 dark:bg-blue-500" aria-hidden="true" />
-                    <span className="text-xs">{meal.meal.fat} g</span>
+                    <span className="text-xs">{meal.meal.carbs} g</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="size-2.5 shrink-0 rounded-sm bg-amber-500 dark:bg-amber-500" aria-hidden="true" />
@@ -41,7 +42,7 @@ export function Meals({ meals }: MealsProps) {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="size-2.5 shrink-0 rounded-sm bg-fuchsia-500 dark:bg-fuchsia-500" aria-hidden="true" />
-                    <span className="text-xs">{meal.meal.carbs} g</span>
+                    <span className="text-xs">{meal.meal.fat} g</span>
                   </div>
                 </ul>
               </div>
