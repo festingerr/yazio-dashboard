@@ -22,6 +22,7 @@ export type ProfileData = {
   initials: string;
   userview: string;
   height: number;
+  weight: number;
   dob: Date;
 }
 
@@ -41,11 +42,13 @@ type ActivityReturned = ReturnType<typeof yazio.user.getExercises> & {
 export async function getProfileData(): Promise<ProfileData | undefined>  {
   try {
     const profile = await yazio.user.get();
+    const weight = await yazio.user.getWeight();
     return {
       username: `${profile.first_name} ${profile.last_name}`,
       initials: `${profile.first_name.charAt(0)}${profile.last_name.charAt(0)}`,
       userview: profile.profile_image,
       height: profile.body_height,
+      weight: Math.round(weight?.value || 0),
       dob: new Date(profile.date_of_birth),
     };
   } catch (error) {
@@ -53,11 +56,9 @@ export async function getProfileData(): Promise<ProfileData | undefined>  {
   }
 }
 
-export async function getActivityData(date: Date = new Date()): Promise<ActivityData | undefined> {
-  const formattedDate = date.toISOString().split('T')[0];
-
+export async function getActivityData(date: string): Promise<ActivityData | undefined> {
   try {
-    const activity = await yazio.user.getExercises({ date: formattedDate });
+    const activity = await yazio.user.getExercises({ date });
     const a = activity as unknown as ActivityReturned;
 
     return {
@@ -76,11 +77,9 @@ export async function getActivityData(date: Date = new Date()): Promise<Activity
   }
 }
 
-export async function getSummaryData(date: Date = new Date()): Promise<SummaryData | undefined> {
-  const formattedDate = date.toISOString().split('T')[0];
+export async function getSummaryData(date: string): Promise<SummaryData | undefined> {
   try {
-    const summary = await yazio.user.getDailySummary({ date: formattedDate });
-
+    const summary = await yazio.user.getDailySummary({ date });
     const totals = reduce(summary.meals, (acc: any, meal) => {
       acc.energy_goal += meal.energy_goal;
       forEach(meal.nutrients, (value, key) => {
@@ -127,18 +126,26 @@ export async function getSummaryData(date: Date = new Date()): Promise<SummaryDa
   }
 }
 
-export async function getProductsData(date: Date = new Date()): Promise<ProductsData[] | undefined> {
-  const formattedDate = date.toISOString().split('T')[0];
+export async function getProductsData(date: string): Promise<ProductsData[] | undefined> {
   try {
-    const response = await yazio.user.getConsumedItems({ date: formattedDate });
+    const response = await yazio.user.getConsumedItems({ date });
 
-    return Promise.all(response.products.map(async (product): Promise<ProductsData> => {
+    const simple = response.simple_products.map((product: any): ProductsData => ({
+      ai: product.is_ai_generated,
+      name: product.name,
+      energy: product.nutrients['energy.energy'],
+      amount: Infinity,
+      daytime: product.daytime,
+      serving: null,
+      quantity: null,
+    }));
+
+    const products = await Promise.all(response.products.map(async (product): Promise<ProductsData> => {
 
       const details = await yazio.products.get(product.product_id);
 
-      // console.log(details, product);
-
       return {
+        ai: false,
         name: details?.name || 'Unknown',
         energy: (details?.nutrients['energy.energy'] || 0) * product.amount,
         amount: product.amount,
@@ -147,6 +154,8 @@ export async function getProductsData(date: Date = new Date()): Promise<Products
         quantity: product.serving_quantity
       };
     }));
+
+    return [ ...simple, ...products ];
   } catch (error) {
     console.error('Error fetching products data:', error);
   }

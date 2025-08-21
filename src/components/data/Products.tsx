@@ -7,8 +7,10 @@ import { capitalize } from "lodash";
 import { ProgressCircle } from "../tremor/ProgressCircle";
 import { Meals } from "./Meals";
 import { CategoryBar } from "../tremor/CategoryBar";
+import { Badge } from "../tremor/Badge";
 
 export type ProductsData = {
+  ai: boolean;
   name: string;
   amount: number;
   energy: number;
@@ -79,10 +81,10 @@ export function Products({ meals, products }: ProductsProps) {
               </p>
               <ul role="list" className="mt-2 text-sm text-gray-500 dark:text-gray-500">
                 {products?.filter((v) => v.daytime === dt).map((product) => (
-                  <li key={product.name} className="flex items-center justify-between space-x-6 space-y-2">
-                    <div className="flex items-center space-x-2.5 truncate">
-                      <span className="truncate dark:text-gray-300">
-                        {product.name}
+                  <li key={product.name} className="flex items-baseline justify-between space-x-6 space-y-2">
+                    <div className="flex items-center space-x-2.5">
+                      <span className="dark:text-gray-300">
+                        {product.ai && <Badge variant="success" className="text-xs py-0.5">AI</Badge>} {product.name}
                         {product.serving && product.quantity && (
                           <span className="ml-1 text-gray-400">
                             ({product.quantity} {product.serving})
@@ -92,7 +94,7 @@ export function Products({ meals, products }: ProductsProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                       <span className="font-medium tabular-nums text-gray-900 dark:text-gray-50">
-                        {product.amount}&nbsp;g
+                        {product.amount === Infinity ? '∞' : product.amount}&nbsp;g
                       </span>
                       <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium tabular-nums text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                         {Math.round(product.energy)}&nbsp;kcal

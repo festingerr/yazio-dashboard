@@ -26,6 +26,7 @@ interface ActivityProps {
 
 const activitiesIconsMap: Record<string, RemixiconComponentType> = {
   cyclingwork: RiRidingLine,
+  cyclingfast: RiRidingLine,
 }
 
 export default function Activity({ activity, stepsGoal }: ActivityProps) {
@@ -64,7 +65,7 @@ export default function Activity({ activity, stepsGoal }: ActivityProps) {
                   <span className="truncate dark:text-gray-300">
                     {activitiesIconsMap[training.name] && createElement(activitiesIconsMap[training.name], { className: "inline-block mr-1 h-4" })}
                     {!activitiesIconsMap[training.name] && training.name}
-                    { training.duration } min
+                    { training.duration } min, <small>{training.name}</small>
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">

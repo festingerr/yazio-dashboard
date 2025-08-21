@@ -1,5 +1,6 @@
 "use client"
 
+import { ProfileData } from "@/lib/actions";
 import { Card } from "../tremor/Card";
 import { CategoryBar } from "../tremor/CategoryBar";
 import { Meals } from "./Meals";
@@ -38,9 +39,10 @@ export type SummaryData = {
 
 interface SummaryProps {
   summary: SummaryData | undefined;
+  profile: ProfileData | undefined;
 }
 
-export function Summary({ summary }: SummaryProps) {
+export function Summary({ summary, profile }: SummaryProps) {
   return (
     <Card className="flex flex-col justify-between">
       <div>
@@ -77,6 +79,7 @@ export function Summary({ summary }: SummaryProps) {
           <li>
             <span className="text-base font-semibold text-gray-900 dark:text-gray-50">
               {summary?.total.carbs} {summary?.units.serving}
+              <sup> <small>{(summary?.total.carbs! / profile?.weight!).toFixed(1)}</small></sup>
             </span>
             <div className="flex items-center gap-2">
               <span
@@ -89,6 +92,7 @@ export function Summary({ summary }: SummaryProps) {
           <li>
             <span className="text-base font-semibold text-gray-900 dark:text-gray-50">
               {summary?.total.protein || 0} {summary?.units.serving}
+              <sup> <small>{(summary?.total.protein! / profile?.weight!).toFixed(1)}</small></sup>
             </span>
             <div className="flex items-center gap-2">
               <span
@@ -101,6 +105,7 @@ export function Summary({ summary }: SummaryProps) {
           <li>
             <span className="text-base font-semibold text-gray-900 dark:text-gray-50">
               {summary?.total.fat || 0} {summary?.units.serving}
+              <sup> <small>{(summary?.total.fat! / profile?.weight!).toFixed(1)}</small></sup>
             </span>
             <div className="flex items-center gap-2">
               <span
