@@ -6,9 +6,9 @@
   </h2>
 </div>
 
-A lightweight dashboard built with React and Next.js that helps you turn your Yazio data into clear charts and daily insights. Transform your nutrition tracking data into meaningful visualizations and gain deeper understanding of your dietary patterns.
+A lightweight dashboard built with React and Next.js that helps you turn your Yazio data into clear charts and daily insights. Transform your nutrition tracking data into meaningful visualizations and gain a deeper understanding of your dietary patterns.
 
-<img alt="Yazio Dashboard view" src="https://github.com/user-attachments/assets/82afe30f-0cf7-4c18-b2f9-c80814f05365" />
+<img alt="Yazio Dashboard View" src="https://github.com/user-attachments/assets/7b9333c5-d2a4-4e1c-a07c-95c145e6b9e4" />
 
 ## ✨ Features
 
