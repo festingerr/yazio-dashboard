@@ -1,110 +1,108 @@
-# Yazio Export Tool
+# Yazio Dashboard
 
-A TypeScript CLI tool for exporting Yazio data to Google Sheets.
+> Transform your Yazio nutrition data into beautiful, insightful visualizations
 
-## Prerequisites
+A lightweight dashboard built with React and Next.js that helps you turn your Yazio data into clear charts and daily insights. Transform your nutrition tracking data into meaningful visualizations and gain deeper understanding of your dietary patterns.
 
-1. **Google Sheets API Setup**: You need to set up Google Sheets API credentials:
-   - Go to the [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select an existing one
-   - Enable the Google Sheets API
-   - Create a service account and download the JSON key file
-   - Rename the key file to `service-account-key.json` and place it in the project root
+## 📸 Screenshot
 
-2. **Environment Variables**: Copy `.env.example` to `.env` and fill in your details:
+<!-- Add your screenshot here -->
+
+> Screenshot will be added soon
+
+## ✨ Features
+
+- 📊 **Interactive Charts** - Visualize your nutrition data with beautiful, responsive charts
+- 🌓 **Dark/Light Mode** - Seamless theme switching with system preference support
+- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile devices
+- 🔒 **Privacy-First** - Your data stays on your device, no external servers
+- ⚡ **Fast & Modern** - Built with Next.js 14 and React 18 for optimal performance
+- 🎨 **Beautiful UI** - Clean, modern interface using Tailwind CSS and Radix UI
+
+## 🛠️ Built With
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Radix UI](https://img.shields.io/badge/Radix_UI-161618?style=for-the-badge&logo=radix-ui&logoColor=white)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node JS** (v22.0.0 or higher)
+- **NPM** (v10.0.0 or higher)
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/alroniks/yazio-dashboard.git
+   cd yazio-dashboard
    ```
-   YAZIO_EMAIL=your@email.com
-   YAZIO_PASSWORD=yourpassword
-   SPREADSHEET_ID=your_google_sheet_id
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
    ```
 
-## Installation
+3. **Set up environment variables**
 
-```bash
-npm install
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-## Development
+   Edit `.env` and add your configuration:
 
-For development with TypeScript hot-reloading:
+   ```env
+   YAZIO_USERNAME=
+   YAZIO_PASSWORD=
+   ```
 
-```bash
-npm run dev -- export --start 2024-01-01 --end 2024-01-31
-```
+4. **Run the development server**
 
-## Building
+   ```bash
+   npm run dev
+   ```
 
-To compile TypeScript to JavaScript:
+5. **Open your browser**
 
-```bash
-npm run build
-```
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
-## Production Usage
+## 🤝 Contributing
 
-After building, you can run the compiled version:
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-```bash
-npm start -- export --start 2024-01-01 --end 2024-01-31
-```
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Or install globally and use the CLI:
+## 📝 License
 
-```bash
-npm install -g .
-yazio-export export --start 2024-01-01 --end 2024-01-31
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
 
-## Commands
+## 👨‍💻 Author
 
-### export
+### Ivan Klimchuk
 
-Export meals from Yazio to Google Sheets.
+- GitHub: [@alroniks](https://github.com/alroniks)
+- Website: [klimchuk.dev](https://klimchuk.dev)
 
-**Options:**
-- `-s, --start <date>`: Start date in YYYY-MM-DD format
-- `-e, --end <date>`: End date in YYYY-MM-DD format
+## 💖 Support
 
-**Example:**
-```bash
-yazio-export export --start 2024-01-01 --end 2024-01-31
-```
+If you find this project useful and would like to support its development, you can:
 
-## TypeScript Features
+- ⭐ Star the repository on GitHub
+- 🐛 Report bugs and suggest features
+- 🤝 Contribute with code improvements
+- ☕ [Buy me a coffee](https://buymeacoffee.com/ivanklimchuk) to fuel development
+- 💝 [Sponsor on Patreon](https://patreon.com/ivanklimchuk) for ongoing support
 
-This project is now fully converted to TypeScript with:
-
-- Type-safe function parameters and return types
-- Proper interfaces for data structures
-- Development mode with `tsx` for hot-reloading
-- Build process that compiles to JavaScript
-- Type declarations included in the build output
-
-## Scripts
-
-- `npm run build`: Compile TypeScript to JavaScript
-- `npm run dev`: Run in development mode with hot-reloading
-- `npm start`: Run the compiled JavaScript version
-- `npm run clean`: Remove the dist directory
-- `npm run prepublishOnly`: Clean and build before publishing
-
-## File Structure
-
-```
-├── bin/
-│   └── index.ts          # CLI entry point
-├── lib/
-│   ├── auth.ts           # Google Sheets authentication
-│   ├── sheets.ts         # Google Sheets operations
-│   └── yazio.ts          # Yazio data fetching
-├── dist/                 # Compiled JavaScript output
-├── .env                  # Environment variables
-├── tsconfig.json         # TypeScript configuration
-└── package.json          # Project configuration
-```
-
-## Notes
-
-- The `lib/yazio.ts` currently contains placeholder implementation
-- The `lib/auth.ts` expects a `service-account-key.json` file for authentication
-- Both files will need proper implementation based on your specific requirements
+Your support helps maintain and improve this project for everyone!
