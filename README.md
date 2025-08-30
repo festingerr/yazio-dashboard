@@ -1,23 +1,22 @@
-# Yazio Dashboard
-
-> Transform your Yazio nutrition data into beautiful, insightful visualizations
+<div align="center">
+  <h2>
+    Transform your Yazio nutrition data into beautiful,</br>
+    insightful visualizations with <ins>Yazio Dashboard</ins><br>
+  <br />
+  </h2>
+</div>
 
 A lightweight dashboard built with React and Next.js that helps you turn your Yazio data into clear charts and daily insights. Transform your nutrition tracking data into meaningful visualizations and gain deeper understanding of your dietary patterns.
 
-## 📸 Screenshot
-
-<!-- Add your screenshot here -->
-
-> Screenshot will be added soon
+<img alt="Yazio Dashboard view" src="https://github.com/user-attachments/assets/82afe30f-0cf7-4c18-b2f9-c80814f05365" />
 
 ## ✨ Features
 
 - 📊 **Interactive Charts** - Visualize your nutrition data with beautiful, responsive charts
 - 🌓 **Dark/Light Mode** - Seamless theme switching with system preference support
-- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile devices
 - 🔒 **Privacy-First** - Your data stays on your device, no external servers
-- ⚡ **Fast & Modern** - Built with Next.js 14 and React 18 for optimal performance
 - 🎨 **Beautiful UI** - Clean, modern interface using Tailwind CSS and Radix UI
+- 🖨️ **Easy Export** - Just print the page for sharing with your nutritionist
 
 ## 🛠️ Built With
 
@@ -25,7 +24,6 @@ A lightweight dashboard built with React and Next.js that helps you turn your Ya
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Radix UI](https://img.shields.io/badge/Radix_UI-161618?style=for-the-badge&logo=radix-ui&logoColor=white)
 
 ## 🚀 Getting Started
 
@@ -74,6 +72,14 @@ Before you begin, ensure you have the following installed:
 
    Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
+## Roadmap
+
+- [x] Add Theme Switcher
+- [ ] Add Timeline View
+- [ ] Multi-language Support
+
+See the [open issues](https://github.com/alroniks/yazio-dashboard/issues) for a full list of proposed features (and known issues).
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
@@ -83,6 +89,12 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Top contributors:
+
+<a href="https://github.com/alroniks/yazio-dashboard/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=alroniks/yazio-dashboard" alt="contrib.rocks image" />
+</a>
 
 ## 📝 License
 
