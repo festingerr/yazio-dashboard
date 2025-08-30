@@ -7,6 +7,7 @@ import { Logo } from "@/../public/Logo";
 import { Label } from "@radix-ui/react-label";
 import { cx, getAge } from "@/lib/utils";
 import { ProfileData } from "@/lib/actions";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 interface NavigationClientProps {
   profile: ProfileData | undefined;
@@ -22,7 +23,8 @@ function Navigation({ profile }: NavigationClientProps) {
           <span className="sr-only">Your Company</span>
           <Logo className="h-6" />
         </div>
-        <div className="flex h-[42px] flex-nowrap gap-1">
+        <div className="flex h-[42px] flex-nowrap gap-4">
+          <ThemeSwitcher/>
           <div className="flex items-center space-x-4">
             {profile?.userview && (
               <img src={profile.userview} alt={profile.username} className="size-9 rounded-full" />
