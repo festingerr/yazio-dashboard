@@ -12,10 +12,24 @@ dotenv.config();
 
 const yazio = new Yazio({
   credentials: {
-    username: process.env.YAZIO_USERNAME,
-    password: process.env.YAZIO_PASSWORD,
+    username: process.env.YAZIO_USERNAME?.trim(),
+    password: process.env.YAZIO_PASSWORD?.trim(),
   },
 });
+
+function logApiError(context: string, error: any): void {
+  const basic = error instanceof Error ? error.message : String(error);
+  const status = (error as any)?.response?.status ?? (error as any)?.status;
+  const statusText = (error as any)?.response?.statusText ?? (error as any)?.statusText;
+  const data = (error as any)?.response?.data
+    ?? (error as any)?.response?._data
+    ?? (error as any)?.data
+    ?? (error as any)?.body
+    ?? (error as any)?.details;
+
+  // Log a concise, structured summary
+  console.error(`[auth-error:${context}]`, { basic, status, statusText, data });
+}
 
 export type ProfileData = {
   username: string;
@@ -52,7 +66,7 @@ export async function getProfileData(): Promise<ProfileData | undefined>  {
       dob: new Date(profile.date_of_birth),
     };
   } catch (error) {
-    console.error('Error fetching profile data:', error);
+    logApiError('profile', error);
   }
 }
 
@@ -73,7 +87,7 @@ export async function getActivityData(date: string): Promise<ActivityData | unde
       })),
     };
   } catch (error) {
-    console.error('Error fetching activity data:', error);
+    logApiError('activity', error);
   }
 }
 
@@ -122,7 +136,7 @@ export async function getSummaryData(date: string): Promise<SummaryData | undefi
       }
     }
   } catch (error) {
-    console.error('Error fetching summary data:', error);
+    logApiError('summary', error);
   }
 }
 
@@ -157,6 +171,6 @@ export async function getProductsData(date: string): Promise<ProductsData[] | un
 
     return [ ...simple, ...products ];
   } catch (error) {
-    console.error('Error fetching products data:', error);
+    logApiError('products', error);
   }
 }

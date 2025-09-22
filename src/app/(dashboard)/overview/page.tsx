@@ -2,7 +2,7 @@
 
 import Activity, { ActivityData } from "@/components/data/Activity"
 import { Summary, SummaryData } from "@/components/data/Summary"
-import { DatePicker } from "@/components/tremor/DatePicker"
+import { DatePicker, DateRangePicker, type DateRange } from "@/components/tremor/DatePicker"
 import { Divider } from "@/components/tremor/Divider"
 import { getActivityData, getProductsData, getProfileData, getSummaryData, ProfileData } from "@/lib/actions"
 import { useEffect, useState } from "react"
@@ -15,6 +15,7 @@ export type DayTime = typeof dayTimes[number];
 export default function OverviewPage() {
 
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [profile, setProfile] = useState<ProfileData | undefined>(undefined);
   const [summary, setSummary] = useState<SummaryData | undefined>(undefined);
   const [activity, setActivity] = useState<ActivityData | undefined>(undefined);
@@ -49,7 +50,23 @@ export default function OverviewPage() {
                 Printable and exportable report for your daily food intake.
               </p>
             </div>
-            <DatePicker value={date} onChange={setDate} className="w-60" />
+            <div className="flex items-center gap-3">
+              <DatePicker value={date} onChange={setDate} className="w-60" />
+              <DateRangePicker value={range} onChange={setRange} className="w-80" />
+              <button
+                onClick={() => {
+                  const from = range?.from || date;
+                  const to = range?.to || date;
+                  if (!from || !to) return;
+                  const fmt = (d: Date) => d.toLocaleDateString('en-UK').replaceAll('/', '-').split('-').reverse().join('-');
+                  const url = `/api/export?from=${fmt(from)}&to=${fmt(to)}`;
+                  window.location.href = url;
+                }}
+                className="px-3 py-2 rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-sm"
+              >
+                Export CSV
+              </button>
+            </div>
           </div>
           <Divider />
           <dl className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-2">
